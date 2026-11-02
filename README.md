@@ -47,3 +47,44 @@ ID yang diterima melalui request API diperlakukan sebagai string dan divalidasi 
 ## Batasan Aplikasi
 
 Aplikasi masih digunakan untuk pengembangan dan pengujian secara lokal. Autentikasi pengguna belum diterapkan sehingga aplikasi belum ditujukan untuk penggunaan produksi.
+## Chapter 9 — Frontend Vue
+
+Frontend SisaBaik dikembangkan menggunakan Vue 3 dan Vite. Frontend berada di folder `frontend/` dan menggunakan komponen untuk menampilkan katalog penawaran serta formulir penyedia.
+
+### Persyaratan dan Instalasi
+
+Gunakan Node.js versi 22 atau lebih baru. Versi npm mengikuti instalasi Node.js yang digunakan.
+
+Untuk memasang dependensi frontend, jalankan perintah berikut dari folder `frontend/`:
+
+```bash
+npm install
+```
+
+Jika ingin memasang dependensi berdasarkan lockfile, gunakan:
+
+```bash
+npm ci
+```
+
+### Menjalankan Frontend
+
+Jalankan perintah berikut dari folder `frontend/` sesuai kebutuhan:
+
+```bash
+npm run dev
+npm run build
+npm run preview
+```
+
+Perintah `npm run dev` menjalankan server pengembangan. `npm run build` membuat hasil build produksi di folder `frontend/dist/`, sedangkan `npm run preview` menyajikan hasil build untuk diperiksa melalui browser.
+
+### Aset dan Data Frontend
+
+Aset ilustrasi atau identitas merek menggunakan file SVG yang tersedia pada folder aset frontend.
+
+Pada Chapter 9, data penawaran masih menggunakan fixture latihan di memori. Perubahan data melalui formulir tidak disimpan secara permanen dan dapat hilang setelah halaman dimuat ulang.
+
+Browser pada modul ini belum memanggil REST API backend. Integrasi frontend dengan backend akan dilakukan pada pertemuan 11.
+
+Backend Modul 8 tetap memiliki pendaftaran mandiri, verifikasi penyedia, autentikasi, dan otorisasi.
