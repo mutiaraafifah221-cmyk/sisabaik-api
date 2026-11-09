@@ -88,3 +88,123 @@ Pada Chapter 9, data penawaran masih menggunakan fixture latihan di memori. Peru
 Browser pada modul ini belum memanggil REST API backend. Integrasi frontend dengan backend akan dilakukan pada pertemuan 11.
 
 Backend Modul 8 tetap memiliki pendaftaran mandiri, verifikasi penyedia, autentikasi, dan otorisasi.
+
+## Integrasi Chapter 10
+
+### 1. Lingkungan Pengembangan
+
+- Node.js: v24.21.0
+- Backend: Express
+- Frontend: Vue 3 dan Vite
+- Database: PostgreSQL
+- Port backend: 3000
+- Port frontend: 5173
+- Port preview: 4173
+
+### 2. Perintah Menjalankan Aplikasi
+
+**Mode pengembangan backend:**
+
+```bash
+npm run dev
+```
+
+**Mode pengembangan frontend:**
+
+```bash
+npm --prefix frontend run dev
+```
+
+**Build frontend:**
+
+```bash
+npm run build
+```
+
+**Preview hasil build frontend:**
+
+```bash
+npm --prefix frontend run preview
+```
+
+**Menjalankan hasil build secara lokal:**
+
+```bash
+npm run start:local
+```
+
+### 3. Konfigurasi Proxy API
+
+Pada mode pengembangan, frontend dijalankan menggunakan Vite pada port 5173, sedangkan backend berjalan pada port 3000.
+
+Permintaan dari frontend dengan awalan `/api` diteruskan ke backend melalui konfigurasi proxy Vite. Konfigurasi ini memungkinkan frontend berkomunikasi dengan backend tanpa harus mengubah alamat API pada setiap proses pengembangan.
+
+Pada mode preview, permintaan `/api` juga diteruskan ke backend agar fitur aplikasi tetap dapat diuji.
+
+### 4. Pendaftaran Akun
+
+Pengguna dapat membuat akun melalui halaman pendaftaran pada aplikasi SisaBaik. Pendaftaran dilakukan dengan mengisi data yang diminta sesuai formulir. Akun yang berhasil didaftarkan dapat digunakan untuk masuk ke aplikasi sesuai peran pengguna.
+
+Aplikasi menyediakan peran pembeli dan penyedia usaha. Setiap peran memiliki hak akses dan fitur yang berbeda sesuai fungsinya.
+
+### 5. Aturan Peninjauan Usaha
+
+Akun penyedia usaha harus melalui proses peninjauan sebelum dapat menggunakan seluruh fitur pengelolaan penawaran. Proses ini bertujuan memastikan informasi usaha telah diisi sesuai ketentuan aplikasi.
+
+Status peninjauan menentukan akses penyedia terhadap fitur pengelolaan penawaran dan transaksi.
+
+### 6. Payload Foto, Versi, dan Aksi
+
+Pengelolaan penawaran mendukung pengiriman data foto dan informasi versi. Data tersebut digunakan untuk mendukung proses penambahan dan perubahan penawaran.
+
+Setiap perubahan penawaran dilakukan melalui aksi yang sesuai dengan hak akses pengguna. Backend melakukan validasi terhadap data yang diterima sebelum perubahan disimpan ke database.
+### 7. Reservasi dan Pemulihan Stok
+
+Ketika pembeli membuat pesanan, stok penawaran akan disesuaikan dengan jumlah produk yang dipesan. Sistem memastikan jumlah pesanan tidak melebihi stok yang tersedia.
+
+Jika pesanan dibatalkan sebelum transaksi selesai, stok yang telah direservasi akan dikembalikan. Dengan demikian, stok dapat tersedia kembali untuk pembeli lain.
+### 8. Pembayaran di Tempat
+
+SisaBaik menerapkan mekanisme pembayaran di tempat saat pembeli mengambil pesanan dari penyedia usaha.
+
+Penyedia usaha dapat mencatat penyelesaian pembayaran setelah pembeli melakukan pengambilan pesanan. Proses ini memerlukan konfirmasi pengambilan dan pembayaran sebelum pesanan dinyatakan selesai.
+
+Aplikasi belum menggunakan payment gateway sehingga pencatatan pembayaran dilakukan secara manual melalui sistem.
+### 9. Definisi Metrik Dashboard
+
+Dashboard pembeli menampilkan ringkasan aktivitas transaksi dengan definisi metrik sebagai berikut:
+
+- Total pengeluaran: akumulasi nilai transaksi yang telah selesai dan dibayar.
+- Total penghematan: selisih antara harga normal dan harga penawaran dikalikan jumlah produk yang berhasil dibeli.
+- Total unit dibeli: jumlah produk dari transaksi yang telah selesai.
+
+Perhitungan metrik didasarkan pada data transaksi yang tersimpan di database.
+### 10. Hasil Pengujian dan Perbaikan
+
+Pengujian integrasi Chapter 10 dilakukan pada fitur utama aplikasi SisaBaik. Hasil pengujian yang telah dilakukan meliputi:
+
+- Pendaftaran dan login akun pengguna berhasil dilakukan.
+- Penambahan dan perubahan penawaran berhasil dilakukan.
+- Foto penawaran berhasil diunggah.
+- Katalog menampilkan penawaran dan mendukung penyaringan kategori serta pembatasan jumlah data.
+- Pembeli berhasil membuat pesanan dan membatalkan pesanan.
+- Penyedia usaha berhasil menerima pesanan dan mengubah status pesanan menjadi siap diambil.
+- Konfirmasi pengambilan dan pembayaran berhasil dilakukan.
+- Dashboard pembeli menampilkan perubahan total pengeluaran, penghematan, dan unit yang dibeli setelah transaksi selesai.
+- Hasil build frontend berhasil dijalankan bersama backend melalui perintah `npm run start:local`.
+
+Dalam proses pengujian, ditemukan kendala validasi data foto ketika penawaran dikirim dengan nilai foto null. Validasi kemudian disesuaikan agar data foto dan versi dapat diproses sesuai kebutuhan aplikasi.
+
+### 11. Batasan Aplikasi
+
+Dalam implementasi Chapter 10, masih terdapat beberapa keterbatasan yang belum dikembangkan, yaitu:
+
+- Sesi pengguna dapat hilang ketika halaman di-refresh.
+- Aplikasi belum menggunakan payment gateway.
+- Fitur reset kata sandi belum tersedia.
+- Verifikasi email belum tersedia.
+- Sistem belum menggunakan idempotency key untuk mencegah pemrosesan permintaan transaksi berulang.
+- Pembaruan data secara realtime belum tersedia.
+- Penghematan biaya penjual belum dihitung dalam dashboard.
+
+Keterbatasan tersebut menjadi bagian yang dapat dikembangkan pada tahap selanjutnya.

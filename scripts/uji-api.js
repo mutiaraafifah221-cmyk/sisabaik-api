@@ -86,7 +86,7 @@ try {
   assert.equal(injeksi.body.meta.jumlah, 0);
   await request("DELETE", path, undefined, 204);
   await request("GET", path, undefined, 404);
-  const a = (await request("POST", "/api/penawaran", payload, 201)).body.data;
+ const a = (await request("POST", "/api/penawaran", payload, 201)).body.data;
   const b = (
     await request(
       "POST",
@@ -126,8 +126,9 @@ try {
     200,
   );
   assert.equal(setelahGagal.body.meta.jumlah, awalPesanan);
-  const tetap = (await request("GET", `/api/penawaran/${a.id}`, undefined, 200))
-    .body;
+  const tetap = (
+    await request("GET", `/api/penawaran/${a.id}`, undefined, 200)
+  ).body;
   assert.equal(tetap.data.stok, 2);
   const order = await request(
     "POST",
@@ -146,8 +147,9 @@ try {
   );
   assert.equal(setelahBerhasil.body.meta.jumlah, awalPesanan + 1);
   await request("DELETE", `/api/penawaran/${a.id}`, undefined, 409);
-  const habis = (await request("GET", `/api/penawaran/${a.id}`, undefined, 200))
-    .body;
+  const habis = (
+    await request("GET", `/api/penawaran/${a.id}`, undefined, 200)
+  ).body;
   assert.equal(habis.data.stok, 0);
   assert.equal(habis.data.status, "habis");
   await request(
@@ -162,7 +164,8 @@ try {
     },
     200,
   );
-  const snapshot = (await request("GET", order.location, undefined, 200)).body;
+  const snapshot = (await request("GET", order.location, undefined, 200))
+    .body;
   assert.equal(snapshot.data.items[0].hargaSatuan, 5000);
   assert.equal(snapshot.data.total, 10000);
   await request("DELETE", `/api/penawaran/${b.id}`, undefined, 204);
