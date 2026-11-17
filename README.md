@@ -208,3 +208,110 @@ Dalam implementasi Chapter 10, masih terdapat beberapa keterbatasan yang belum d
 - Penghematan biaya penjual belum dihitung dalam dashboard.
 
 Keterbatasan tersebut menjadi bagian yang dapat dikembangkan pada tahap selanjutnya.
+## Chapter 11 – Pengujian dan Deployment
+
+### 1. Teknologi yang Digunakan
+
+Aplikasi SisaBaik dikembangkan menggunakan teknologi berikut:
+
+- Node.js dan Express sebagai backend.
+- Vue 3 dan Vite sebagai frontend.
+- PostgreSQL sebagai basis data.
+- Render sebagai layanan deployment aplikasi.
+- Neon sebagai layanan database cloud.
+
+### 2. Perintah Menjalankan Aplikasi
+
+Jalankan perintah dari folder utama proyek.
+
+**Memasang dependensi backend:**
+
+```bash
+npm ci
+```
+
+**Memasang dependensi frontend:**
+
+```bash
+npm --prefix frontend ci --include=dev
+```
+
+**Menjalankan mode pengembangan backend:**
+
+```bash
+npm run dev
+```
+
+**Menjalankan mode pengembangan frontend:**
+
+```bash
+npm --prefix frontend run dev
+```
+
+**Membuat build produksi:**
+
+```bash
+npm run build
+```
+
+**Menjalankan aplikasi hasil build secara lokal:**
+
+```bash
+npm run start:local
+```
+
+**Menjalankan aplikasi menggunakan perintah start:**
+
+```bash
+npm start
+```
+
+### 3. Deployment Aplikasi
+
+Aplikasi SisaBaik telah di-deploy menggunakan Render.
+
+- URL publik: https://sisabaik-api-7wty.onrender.com
+- Branch deployment: `feature/fullstack-vue`
+- Build command: `npm ci && npm --prefix frontend ci --include=dev && npm run build`
+- Start command: `npm start`
+- Health check: `/healthz`
+
+Database cloud menggunakan Neon. Konfigurasi koneksi disimpan melalui environment variables dan tidak dicantumkan dalam dokumentasi publik.
+
+### 4. Pendaftaran dan Peninjauan Usaha
+
+Pengguna dapat mendaftarkan akun melalui halaman Daftar. Aplikasi menyediakan peran pembeli dan penyedia. Penyedia usaha perlu melengkapi informasi usaha dan melalui proses peninjauan sebelum memperoleh akses ke fitur pengelolaan penawaran.
+
+### 5. Definisi Metrik
+
+Metrik dashboard pembeli meliputi:
+
+- Total pengeluaran: jumlah transaksi yang telah selesai dan dibayar.
+- Total penghematan: selisih harga normal dan harga penawaran dikalikan jumlah unit yang dibeli.
+- Total unit dibeli: jumlah unit dari transaksi yang telah selesai.
+
+Metrik dashboard penyedia menggambarkan aktivitas penawaran dan transaksi yang tercatat dalam aplikasi. Nilai pendapatan dan diskon belum menggambarkan keuntungan bersih karena biaya operasional penyedia belum dihitung.
+
+Jumlah unit yang tercatat didistribusikan merupakan data transaksi aplikasi, bukan pengukuran langsung dampak lingkungan.
+
+### 6. Batasan Fitur
+
+- Aplikasi belum menggunakan payment gateway.
+- Pembayaran dicatat melalui proses konfirmasi di aplikasi.
+- Penghematan pembeli dihitung berdasarkan selisih harga yang tercatat.
+- Biaya operasional dan keuntungan bersih penyedia belum dihitung.
+- Dampak pengurangan limbah makanan belum diukur secara langsung.
+- Layanan gratis memiliki keterbatasan kapasitas dan ketersediaan.
+
+### 7. Pengujian dan Dokumentasi
+
+Pemeriksaan deployment dilakukan menggunakan perintah:
+
+```bash
+npm run deploy:test -- https://sisabaik-api-7wty.onrender.com
+```
+
+Hasil pemeriksaan deployment, matriks pengujian, log alur utama, audit, dan refleksi proyek disimpan dalam folder `docs/minggu12/`.
+
+Pengujian yang belum dilakukan dicatat sebagai belum diuji dan tidak dinyatakan berhasil tanpa bukti.
+
